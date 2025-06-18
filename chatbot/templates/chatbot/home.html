@@ -1,0 +1,26 @@
+{% extends "chatbot/base.html" %}
+{% block title %}Home | HR Chatbot{% endblock %}
+{% block content %}
+  <div class="p-4 bg-white rounded shadow-sm">
+    <h1 class="mb-4">Welcome to the HR Chatbot!</h1>
+    <a class="btn btn-success mb-3" href="{% url 'upload_policy' %}">Upload a new HR Policy file</a>
+    <h4>Your uploaded policy files:</h4>
+    <ul class="list-group mb-3">
+        {% for file in user_files %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <a href="{{ file.file.url }}">{{ file.file.name|cut:"policies/" }}</a>
+                  <span class="text-muted small">(uploaded {{ file.uploaded_at|date:"Y-m-d H:i" }})</span>
+                </div>
+                <form action="{% url 'delete_policy' file.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this file?');">Delete</button>
+                </form>
+            </li>
+        {% empty %}
+            <li class="list-group-item">You have not uploaded any files yet.</li>
+        {% endfor %}
+    </ul>
+    <a class="btn btn-primary" href="{% url 'chat_with_policy' %}">➡️ Ask questions about your policy documents</a>
+  </div>
+{% endblock %}

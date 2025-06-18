@@ -1,0 +1,24 @@
+{% extends "chatbot/base.html" %}
+{% block title %}Upload Policy | HR Chatbot{% endblock %}
+{% block content %}
+  <div class="p-4 bg-white rounded shadow-sm">
+    <h2 class="mb-4">Upload your policy file</h2>
+    <form method="post" enctype="multipart/form-data" class="mb-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input type="file" name="file" class="form-control" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Upload</button>
+    </form>
+    <h5>Your uploaded files:</h5>
+    <ul class="list-group">
+      {% for file in files %}
+        <li class="list-group-item">
+          {{ file.file.name|cut:"policies/" }} (uploaded at {{ file.uploaded_at|date:"Y-m-d H:i" }})
+        </li>
+      {% endfor %}
+    </ul>
+    <br>
+    <a class="btn btn-link" href="{% url 'home' %}">⬅️ Back to Home</a>
+  </div>
+{% endblock %}
