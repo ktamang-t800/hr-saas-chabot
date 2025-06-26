@@ -19,4 +19,16 @@ def main():
 
 
 if __name__ == '__main__':
+    import os
+    if os.environ.get('CREATE_SUPERUSER', '') == '1':
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        username = "ktamangsuper"
+        email = "ktamang@gmail.com"
+        password = "Dilanjali"
+        if not User.objects.filter(username=username).exists():
+            User.objects.create_superuser(username, email, password)
+            print("Superuser created!")
+        else:
+            print("Superuser already exists.")
     main()
